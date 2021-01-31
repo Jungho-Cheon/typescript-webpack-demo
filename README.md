@@ -1,44 +1,62 @@
-# 4-SOURCE-MAP
+# 5-WRAP-UP
 
-> `source map`은 `webpack`을 통해 번들링되고 압출된 배포용 파일에서 원본 파일을 매핑하는 역할을 합니다.
-> 예를 들어, `bundle.js`에서 에러가 발생한 경우 압축된 파일인 `bundle.js`에서 디버깅하기는 쉽지 않습니다.
-> 이때, `source map`을 이용하면 원본에서 에러의 위치를 쉽게 찾아낼 수 있습니다.
+-   webpack은 개발 환경과 프로덕션 환경에 대해 독립적인 설정이 가능합니다.
+-   각 환경마다 독립적인 config파일을 만들고 package.json의 scripts를 환경별로 설정하여 유연한 개발이 가능해집니다.
+-   demo 프로젝트에서는 공통설정(common), 개발(dev), 배포(prod) 총 3개의 config파일을 만들어 설정을 적용해 보도록 하겠습니다.
 
--   `source map`을 사용하기 위해 `tsconfig.json`에서 `sourcemap` 프로퍼티의 주석을 해제하고 `webpack.config.js` 에서도 `source map` 설정을 해줍니다.
-
-```javascript
-// tsconfig.json
-{
-    ...
-    "sourceMap": true,
-    ...
-}
-```
-
-```javascript
-// webpack.config.js
-module.exports = {
-    devtool: "eval-source-map",
-    ...
-}
-```
-
-> `devtool`에 설정할 수 있는 `source map`의 종류는 다양하다. 공식문서를 참고해 적용해야할 듯 합니다.
-
-<br/>
+<br />
 
 ---
 
-> 우선 `source map`을 적용하기 전 콘솔에 찍힌 에러 메세지는 다음과 같습니다.
->
-> <img width="356" alt="스크린샷 2021-01-31 오후 6 30 08" src="https://user-images.githubusercontent.com/61958795/106379887-59842500-63f2-11eb-8646-ba56539e3c35.png">
+우선 공통 설정을 위해 필요한 패키지를 설치합니다.
 
--   `minimize`되어있는 `bundle.js`에서 해당 에러를 찾기는 쉽지 않습니다.
+```bash
+yarn add -D webpack-merge
+```
 
-> 다음은 `source map`을 생성한 뒤 에러 메세지 입니다.
->
-> <img width="415" alt="스크린샷 2021-01-31 오후 6 33 18" src="https://user-images.githubusercontent.com/61958795/106379993-cac3d800-63f2-11eb-973a-c69651b0490b.png">
+HTML 파일 또한 Template설정을 통해 환경 별로 알맞은 js파일을 주입하도록 하겠습니다.
 
--   에러가 발생한 index.ts 파일의 위치를 알려주는 것을 확인할 수 있습니다. 해당 에러를 클릭하면 다음과 같이 원본 소스를 확인할 수 있습니다.
+-   html-webpack-plugin을 설치하고 설정해주도록 하겠습니다.
+    ```bash
+    yarn add -D html-webpack-plugin
+    ```
+    ```javascript
+    // webpack.common.js
+    module.exports = {
+        ...
+        plugins: [
+            new HTMLWebpackPlugin({
+                template: "./src/template.html",
+            }),
+        ],
+        ...
+    }
+    ```
+-   해당 plugin은 html 템플릿을 설정하여 webpack 실행 시 body 태그 끝에 script 태그를 추가해줍니다.
 
-    <img width="361" alt="스크린샷 2021-01-31 오후 6 33 26" src="https://user-images.githubusercontent.com/61958795/106379996-cf888c00-63f2-11eb-8a20-73f2de9e6179.png">
+> `prod`환경에서는 bundle파일의 이름을 `[contenthash]`로 지정하고 있습니다. 이렇게 지정하게되면 원본 파일들의 내용이 변경되는 경우 hash값이 변경되어 파일이름이 바뀌게 됩니다. 브라우져에서 파일을 캐시할 경우 이름을 기준으로 캐시하게 되는데 이는 변경사항이 적용되지 못하는 경우가 생기므로 빌드 파일을 위와 같이 설정하였습니다.
+
+<br />
+
+변경 사항이 적용된 후 빌드하게 되면 당연히 새로운 hash값을 가진 파일이 생성됩니다. 이전에 빌드한 파일을 매번 지우기는 귀찮기 때문에 자동으로 해결해주는 plugin을 설치하여 적용합니다.
+![스크린샷 2021-01-31 오후 7 16 02](https://user-images.githubusercontent.com/61958795/106380930-d4503e80-63f8-11eb-956f-e6168db34806.png)
+
+```bash
+yarn add -D clean-webpack-plugin
+```
+
+```javascript
+// webpack.prod.js
+const { CleanWebpackPlugin } = require("clean-webpack-plugin")
+{
+    ...
+    plugins: [
+        new CleanWebpackPlugin()
+    ],
+    ...
+}
+```
+
+다시 빌드하게되면 현재 content로 생성된 hash와 다른 js파일이 자동으로 지워지는 것을 확인할 수 있다.
+
+![스크린샷 2021-01-31 오후 7 19 22](https://user-images.githubusercontent.com/61958795/106380994-3ad55c80-63f9-11eb-96f5-9fd96866d81d.png)
