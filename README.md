@@ -9,7 +9,7 @@ yarn add -D webpack-dev-server
 -   현재 `webpack` 버전에서는 `webpack serve` 명령어를 통해 `webpack-dev-server`를 실행할 수 있습니다.
 -   `package.json`에 `scripts`를 추가합니다.
 
-```json
+```javascript
 {
     ...
     "scripts": [
