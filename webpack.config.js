@@ -6,6 +6,7 @@ function resolve(dir) {
 
 module.exports = {
     entry: "./src/index.ts",
+    mode: "development",
     module: {
         rules: [
             // src폴더의 *.ts 에 대해 ts-loader를 적용
@@ -15,6 +16,11 @@ module.exports = {
                 include: [resolve("src")],
             },
         ],
+    },
+    devServer: {
+        contentBase: resolve("public"),
+        compress: true,
+        port: 9000,
     },
     output: {
         filename: "bundle.js",
