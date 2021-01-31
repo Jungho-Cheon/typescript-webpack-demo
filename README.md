@@ -30,11 +30,13 @@ module.exports = {
 ---
 
 > 우선 `source map`을 적용하기 전 콘솔에 찍힌 에러 메세지는 다음과 같습니다.
+>
 > <img width="356" alt="스크린샷 2021-01-31 오후 6 30 08" src="https://user-images.githubusercontent.com/61958795/106379887-59842500-63f2-11eb-8646-ba56539e3c35.png">
 
 -   `minimize`되어있는 `bundle.js`에서 해당 에러를 찾기는 쉽지 않습니다.
 
 > 다음은 `source map`을 생성한 뒤 에러 메세지 입니다.
+>
 > <img width="415" alt="스크린샷 2021-01-31 오후 6 33 18" src="https://user-images.githubusercontent.com/61958795/106379993-cac3d800-63f2-11eb-973a-c69651b0490b.png">
 
 -   에러가 발생한 index.ts 파일의 위치를 알려주는 것을 확인할 수 있습니다. 해당 에러를 클릭하면 다음과 같이 원본 소스를 확인할 수 있습니다.
