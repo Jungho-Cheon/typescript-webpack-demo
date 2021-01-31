@@ -5,8 +5,9 @@ function resolve(dir) {
 }
 
 module.exports = {
+    devtool: "eval-source-map",
     entry: "./src/index.ts",
-    mode: "development",
+    // mode: "development",
     module: {
         rules: [
             // src폴더의 *.ts 에 대해 ts-loader를 적용
