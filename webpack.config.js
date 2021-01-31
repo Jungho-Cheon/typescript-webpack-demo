@@ -22,6 +22,9 @@ module.exports = {
         compress: true,
         port: 9000,
     },
+    resolve: {
+        extensions: [".ts", ".js"],
+    },
     output: {
         filename: "bundle.js",
         path: resolve("public"),

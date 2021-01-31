@@ -1,4 +1,9 @@
-console.log("initial test1");
-console.log("initial test2");
-console.log("initial test3");
-console.log("initial test4");
+import { formData } from "./forms";
+
+const form = document.querySelector("form");
+
+form?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const data = formData(form);
+    console.log(data);
+});
