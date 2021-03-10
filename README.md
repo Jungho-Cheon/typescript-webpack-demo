@@ -1,6 +1,6 @@
 # 1-INIT-WEBPACK
 
--   `Typescript`는 단순히 `Javascript`에 Type을 강제하여 미연에 에러를 잡아낼 수 있도록 합니다.
+-   `Typescript`는 `Javascript`에 Type을 강제하여 미연에 에러를 잡아낼 수 있도록 합니다.
 -   `npm`, `yarn`과 같은 패키지 매니저를 통해 `typescript` 컴파일러인 `tsc`를 설치할 수 있습니다.
 -   설치할 때, 글로벌 설정을 주면 프로젝트 외부에서도 사용 가능하며 프로젝트에서만 사용하기를 원한다면 --save-dev 옵션을 사용하여 `devDependencies`에 추가할 수 있도록 합니다.
 
